@@ -42,49 +42,83 @@ const { NotImplementedError } = require('../extensions/index.js');
 //   return season;
 // }
 
+// function getSeason(date) {
+//     const dateObject = new Date(date);
+
+// if(dateObject.toString() === 'Invalid Date') {
+//     console.log('Invalid date string');
+// } else {
+//     console.log('Valid date string');
+// }
+
+//   let timestamp = Date.parse(date);
+//   if (isNaN(timestamp)) {
+//     let season = 'Unable to determine the time of year!';
+//     console.log('Invalid date format');
+//   } else {
+//     console.log('Valid date format');
+//     let mounth = date.toString().split(' ');
+
+//     switch (mounth[1]) {
+//       case 'Dec':
+//       case 'Jan':
+//       case 'Feb':
+//         season = 'winter';
+//         break;
+//       case 'Mar':
+//       case 'Apr':
+//       case 'May':
+//         season = 'spring';
+//         break;
+//       case 'Jun':
+//       case 'Jul':
+//       case 'Aug':
+//         season = 'summer';
+//         break;
+//       case 'Sep':
+//       case 'Oct':
+//       case 'Nov':
+//         season = 'fall';
+//         break;
+//       default:
+//         season = 'Invalid date!';
+//         break;
+//     }
+//     return season;
+//   }
+// }
+
 function getSeason(date) {
-  //     const dateObject = new Date(date);
+  if (arguments.length === 0) {
+    return 'Unable to determine the time of year!';
+  }
 
-  // if(dateObject.toString() === 'Invalid Date') {
-  //     console.log('Invalid date string');
-  // } else {
-  //     console.log('Valid date string');
-  // }
+  const timestamp = Date.parse(date);
+  if (isNaN(timestamp) || isNaN(date.getTime())) {
+    throw new Error('Invalid date!');
+  }
 
-  let timestamp = Date.parse(date);
-  if (isNaN(timestamp)) {
-    let season = 'Unable to determine the time of year!';
-    console.log('Invalid date format');
-  } else {
-    console.log('Valid date format');
-    let mounth = date.toString().split(' ');
+  const month = date.getMonth();
 
-    switch (mounth[1]) {
-      case 'Dec':
-      case 'Jan':
-      case 'Feb':
-        season = 'winter';
-        break;
-      case 'Mar':
-      case 'Apr':
-      case 'May':
-        season = 'spring';
-        break;
-      case 'Jun':
-      case 'Jul':
-      case 'Aug':
-        season = 'summer';
-        break;
-      case 'Sep':
-      case 'Oct':
-      case 'Nov':
-        season = 'fall';
-        break;
-      default:
-        season = 'Invalid date!';
-        break;
-    }
-    return season;
+  switch (month) {
+    case 11:
+    case 0:
+    case 1:
+      return 'winter';
+    case 2:
+    case 3:
+    case 4:
+      return 'spring';
+    case 5:
+    case 6:
+    case 7:
+      return 'summer';
+    case 8:
+    case 9:
+    case 10:
+      return 'fall';
+    default:
+      throw new Error('Invalid date!');
   }
 }
 
