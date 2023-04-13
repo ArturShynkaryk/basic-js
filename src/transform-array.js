@@ -15,31 +15,32 @@ const { NotImplementedError } = require('../extensions/index.js');
  */
 function transform(arr) {
   if (!Array.isArray(arr)) {
-    throw new Error('arr parameter must be an instance of the Array!');
+    throw new Error("'arr' parameter must be an instance of the Array!");
   }
-  const result = [];
-  const controlSequences = ['--discard-next', '--discard-prev', '--double-next', '--double-prev'];
+
+  const transformedArr = [];
+
   for (let i = 0; i < arr.length; i++) {
-    if (controlSequences.includes(arr[i])) {
-      continue;
-    }
-    result.push(arr[i]);
-    if (arr[i - 1] === '--discard-next') {
-      result.pop();
-      continue;
-    }
-    if (arr[i - 1] === '--double-next') {
-      result.push(arr[i]);
-    }
-    if (arr[i + 1] === '--discard-prev') {
-      result.pop();
-      continue;
-    }
-    if (arr[i + 1] === '--double-prev' && i > 0) {
-      result.push(arr[i - 1]);
+    if (arr[i] === '--discard-next') {
+      i++;
+    } else if (arr[i] === '--discard-prev') {
+      if (i > 0 && arr[i - 2] !== '--discard-next') {
+        transformedArr.pop();
+      }
+    } else if (arr[i] === '--double-next') {
+      if (i < arr.length - 1) {
+        transformedArr.push(arr[i + 1]);
+      }
+    } else if (arr[i] === '--double-prev') {
+      if (i > 0 && arr[i - 2] !== '--discard-next') {
+        transformedArr.push(arr[i - 1]);
+      }
+    } else {
+      transformedArr.push(arr[i]);
     }
   }
-  return result;
+
+  return transformedArr;
 }
 
 module.exports = {
